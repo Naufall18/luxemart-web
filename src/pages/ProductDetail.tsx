@@ -29,28 +29,27 @@ export default function ProductDetail() {
   const [selectedVariant, setSelectedVariant] = useState<number | null>(null);
   const [isWished, setIsWished] = useState(false);
 
-  // Fallbacks
-  const mockProductDetail: Product = {
-    id: 1,
-    name: 'Vanguard Chronograph',
-    slug: 'vanguard-chronograph',
-    price: '12400',
-    description: 'A masterpiece of contemporary horology, featuring custom-designed complications, sapphire crystal, and an authentic alligator leather strap. Perfectly balance functional instrumentation with pure luxury aesthetics.',
-    rating: 4.9,
-    reviews_count: 120,
-    brand: { name: 'Chronos' },
-    category: { name: 'Timepieces', slug: 'timepieces' },
-    images: [
-      { image_path: 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&q=80&w=600' },
-      { image_path: 'https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=600' }
-    ],
-    variants: [
-      { id: 101, name: 'Stellar Black' },
-      { id: 102, name: 'Rose Gold' }
-    ]
-  };
-
   useEffect(() => {
+    const fallbackProduct: Product = {
+      id: 1,
+      name: 'Vanguard Chronograph',
+      slug: 'vanguard-chronograph',
+      price: '12400',
+      description: 'A masterpiece of contemporary horology, featuring custom-designed complications, sapphire crystal, and an authentic alligator leather strap. Perfectly balance functional instrumentation with pure luxury aesthetics.',
+      rating: 4.9,
+      reviews_count: 120,
+      brand: { name: 'Chronos' },
+      category: { name: 'Timepieces', slug: 'timepieces' },
+      images: [
+        { image_path: 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&q=80&w=600' },
+        { image_path: 'https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=600' }
+      ],
+      variants: [
+        { id: 101, name: 'Stellar Black' },
+        { id: 102, name: 'Rose Gold' }
+      ]
+    };
+
     async function loadProduct() {
       try {
         if (slug) {
@@ -61,14 +60,14 @@ export default function ProductDetail() {
               setSelectedImage(`http://localhost:8000/storage/${res.data.data.images[0].image_path}`);
             }
           } else {
-            setProduct(mockProductDetail);
-            setSelectedImage(mockProductDetail.images?.[0].image_path || '');
+            setProduct(fallbackProduct);
+            setSelectedImage(fallbackProduct.images?.[0].image_path || '');
           }
         }
-      } catch (err) {
-        setProduct(mockProductDetail);
-        setSelectedImage(mockProductDetail.images?.[0].image_path || '');
-      } finally {
+       } catch {
+         setProduct(fallbackProduct);
+         setSelectedImage(fallbackProduct.images?.[0].image_path || '');
+       } finally {
         setLoading(false);
       }
     }
@@ -85,9 +84,9 @@ export default function ProductDetail() {
       });
       alert('Product successfully added to your cart.');
       navigate('/cart');
-    } catch (err) {
-      alert('Failed to connect to cart API. Added item locally.');
-      // Mock cart update locally
+     } catch {
+       alert('Failed to connect to cart API. Added item locally.');
+       // Mock cart update locally
       const localCart = JSON.parse(localStorage.getItem('mock_cart') || '[]');
       localCart.push({
         id: Math.floor(Math.random() * 1000),

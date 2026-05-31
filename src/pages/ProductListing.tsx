@@ -31,61 +31,54 @@ export default function ProductListing() {
 
   // Filters state
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
   const [priceRange, setPriceRange] = useState(15000);
   const [sortBy, setSortBy] = useState('relevance');
 
-  // Fallbacks
-  const mockCategories = [
-    { id: 1, name: 'Timepieces', slug: 'timepieces' },
-    { id: 2, name: 'Leather Goods', slug: 'leather-goods' },
-    { id: 3, name: 'Fragrance', slug: 'fragrance' },
-    { id: 4, name: 'Jewelry', slug: 'jewelry' }
-  ];
-
-  const mockProducts: Product[] = [
-    { id: 1, name: 'Vanguard Chronograph', slug: 'vanguard-chronograph', price: '12400', brand: { name: 'Chronos' }, rating: 4.9, reviews_count: 120, image: 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&q=80&w=500', category: { name: 'Timepieces', slug: 'timepieces' } } as any,
-    { id: 2, name: 'Heritage Leather Tote', slug: 'heritage-leather-tote', price: '4500', brand: { name: 'Aurelia' }, rating: 4.8, reviews_count: 85, image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=500', category: { name: 'Leather Goods', slug: 'leather-goods' } } as any,
-    { id: 3, name: 'Oud Imperial Extrait', slug: 'oud-imperial', price: '3200', brand: { name: 'Maison D\'Or' }, rating: 5.0, reviews_count: 42, image: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=500', category: { name: 'Fragrance', slug: 'fragrance' } } as any,
-    { id: 4, name: 'Infinity Diamond Studs', slug: 'infinity-diamonds', price: '18900', brand: { name: 'Carat & Co' }, rating: 4.9, reviews_count: 67, image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=500', category: { name: 'Jewelry', slug: 'jewelry' } } as any,
-    { id: 5, name: 'Royal Gold Chrono', slug: 'royal-gold-chrono', price: '15500', brand: { name: 'Chronos' }, rating: 4.7, reviews_count: 31, image: 'https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=500', category: { name: 'Timepieces', slug: 'timepieces' } } as any,
-    { id: 6, name: 'Signature Clutch', slug: 'signature-clutch', price: '2800', brand: { name: 'Aurelia' }, rating: 4.9, reviews_count: 53, image: 'https://images.unsplash.com/photo-1566150905458-1bf1fc15a7a0?auto=format&fit=crop&q=80&w=500', category: { name: 'Leather Goods', slug: 'leather-goods' } } as any,
-  ];
+  // Derive selected category from URL params
+  const selectedCategory = searchParams.get('category') || '';
 
   useEffect(() => {
+    const mockCategories = [
+      { id: 1, name: 'Timepieces', slug: 'timepieces' },
+      { id: 2, name: 'Leather Goods', slug: 'leather-goods' },
+      { id: 3, name: 'Fragrance', slug: 'fragrance' },
+      { id: 4, name: 'Jewelry', slug: 'jewelry' }
+    ];
+
+    const mockProducts: Product[] = [
+       { id: 1, name: 'Vanguard Chronograph', slug: 'vanguard-chronograph', price: '12400', brand: { name: 'Chronos' }, rating: 4.9, reviews_count: 120, images: [{ image_path: 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&q=80&w=500' }], category: { name: 'Timepieces', slug: 'timepieces' } },
+       { id: 2, name: 'Heritage Leather Tote', slug: 'heritage-leather-tote', price: '4500', brand: { name: 'Aurelia' }, rating: 4.8, reviews_count: 85, images: [{ image_path: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=500' }], category: { name: 'Leather Goods', slug: 'leather-goods' } },
+       { id: 3, name: 'Oud Imperial Extrait', slug: 'oud-imperial', price: '3200', brand: { name: 'Maison D\'Or' }, rating: 5.0, reviews_count: 42, images: [{ image_path: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=500' }], category: { name: 'Fragrance', slug: 'fragrance' } },
+       { id: 4, name: 'Infinity Diamond Studs', slug: 'infinity-diamonds', price: '18900', brand: { name: 'Carat & Co' }, rating: 4.9, reviews_count: 67, images: [{ image_path: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=500' }], category: { name: 'Jewelry', slug: 'jewelry' } },
+       { id: 5, name: 'Royal Gold Chrono', slug: 'royal-gold-chrono', price: '15500', brand: { name: 'Chronos' }, rating: 4.7, reviews_count: 31, images: [{ image_path: 'https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=500' }], category: { name: 'Timepieces', slug: 'timepieces' } },
+       { id: 6, name: 'Signature Clutch', slug: 'signature-clutch', price: '2800', brand: { name: 'Aurelia' }, rating: 4.9, reviews_count: 53, images: [{ image_path: 'https://images.unsplash.com/photo-1566150905458-1bf1fc15a7a0?auto=format&fit=crop&q=80&w=500' }], category: { name: 'Leather Goods', slug: 'leather-goods' } },
+    ];
+
     async function loadData() {
       try {
         const catRes = await categoriesApi.list();
         if (catRes.data && catRes.data.data) {
           setCategories(catRes.data.data);
         }
-      } catch (err) {
-        setCategories(mockCategories);
-      }
+       } catch {
+         setCategories(mockCategories);
+       }
 
-      try {
-        const prodRes = await productsApi.list();
-        if (prodRes.data && prodRes.data.data) {
-          setProducts(prodRes.data.data);
-        } else {
-          setProducts(mockProducts);
-        }
-      } catch (err) {
-        setProducts(mockProducts);
+       try {
+         const prodRes = await productsApi.list();
+         if (prodRes.data && prodRes.data.data) {
+           setProducts(prodRes.data.data);
+         } else {
+           setProducts(mockProducts);
+         }
+       } catch {
+         setProducts(mockProducts);
       } finally {
         setLoading(false);
       }
     }
     loadData();
   }, []);
-
-  // Update selected category if query parameter changes
-  useEffect(() => {
-    const cat = searchParams.get('category');
-    if (cat !== null) {
-      setSelectedCategory(cat);
-    }
-  }, [searchParams]);
 
   // Client-side filtering logic
   const filteredProducts = products.filter(prod => {
@@ -101,7 +94,6 @@ export default function ProductListing() {
   });
 
   const handleCategorySelect = (slug: string) => {
-    setSelectedCategory(slug);
     setSearchParams(slug ? { category: slug } : {});
   };
 
@@ -260,7 +252,7 @@ export default function ProductListing() {
                   >
                     <Link to={`/product/${prod.slug}`} className="relative block aspect-[4/5] overflow-hidden bg-gray-100">
                       <img 
-                        src={(prod as any).image || (prod.images && prod.images[0] ? `http://localhost:8000/storage/${prod.images[0].image_path}` : 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&q=80&w=500')} 
+                        src={(prod.images && prod.images[0] ? (prod.images[0].image_path.startsWith('http') ? prod.images[0].image_path : `http://localhost:8000/storage/${prod.images[0].image_path}`) : 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&q=80&w=500')} 
                         alt={prod.name} 
                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
                       />
@@ -302,7 +294,7 @@ export default function ProductListing() {
                   >
                     <Link to={`/product/${prod.slug}`} className="w-36 h-44 flex-shrink-0 rounded-2xl overflow-hidden bg-gray-100">
                       <img 
-                        src={(prod as any).image || (prod.images && prod.images[0] ? `http://localhost:8000/storage/${prod.images[0].image_path}` : 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&q=80&w=500')} 
+                        src={(prod.images && prod.images[0] ? (prod.images[0].image_path.startsWith('http') ? prod.images[0].image_path : `http://localhost:8000/storage/${prod.images[0].image_path}`) : 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&q=80&w=500')} 
                         alt={prod.name} 
                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
                       />

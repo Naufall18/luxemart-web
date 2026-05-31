@@ -50,17 +50,17 @@ export default function Home() {
         if (catRes.data && catRes.data.data) {
           setCategories(catRes.data.data);
         }
-      } catch (err) {
-        console.warn('Backend categories fetch failed, using fallback.');
-      }
+       } catch {
+         console.warn('Backend categories fetch failed, using fallback.');
+       }
 
-      try {
-        const prodRes = await productsApi.featured();
-        if (prodRes.data && prodRes.data.data) {
-          setFeaturedProducts(prodRes.data.data);
-        }
-      } catch (err) {
-        console.warn('Backend featured products fetch failed, using fallback.');
+       try {
+         const prodRes = await productsApi.featured();
+         if (prodRes.data && prodRes.data.data) {
+           setFeaturedProducts(prodRes.data.data);
+         }
+       } catch {
+         console.warn('Backend featured products fetch failed, using fallback.');
       } finally {
         setLoading(false);
       }
@@ -196,7 +196,7 @@ export default function Home() {
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1A1F3A]/80 to-transparent" />
                     <div className="absolute bottom-6 left-6 text-white">
                       <div className="text-xl font-bold mb-1">{cat.name}</div>
-                      <div className="text-xs opacity-80">{(cat as any).count || 'Explore items'}</div>
+                      <div className="text-xs opacity-80">{(cat as { count?: string }).count || 'Explore items'}</div>
                     </div>
                   </div>
                 </Link>
@@ -228,7 +228,7 @@ export default function Home() {
               >
                 <Link to={`/product/${prod.slug}`} className="relative block aspect-[4/5] overflow-hidden bg-gray-100">
                   <img 
-                    src={prod.images && prod.images[0] ? (prod.images[0].image_path.startsWith('http') ? prod.images[0].image_path : `http://localhost:8000/storage/${prod.images[0].image_path}`) : 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&q=80&w=500'} 
+                    src={prod.images?.[0]?.image_path?.startsWith('http') ? prod.images[0].image_path : prod.images?.[0]?.image_path ? `http://localhost:8000/storage/${prod.images[0].image_path}` : 'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&q=80&w=500'} 
                     alt={prod.name} 
                     className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
                   />

@@ -33,9 +33,9 @@ export default function Cart() {
         } else {
           loadLocalCart();
         }
-      } catch (err) {
-        loadLocalCart();
-      } finally {
+       } catch {
+         loadLocalCart();
+       } finally {
         setLoading(false);
       }
     }
@@ -60,9 +60,9 @@ export default function Cart() {
     try {
       await cartApi.update(id, newQty);
       setCartItems(items => items.map(item => item.id === id ? { ...item, quantity: newQty } : item));
-    } catch (err) {
-      // Local fallback
-      const updated = cartItems.map(item => item.id === id ? { ...item, quantity: newQty } : item);
+     } catch {
+       // Local fallback
+       const updated = cartItems.map(item => item.id === id ? { ...item, quantity: newQty } : item);
       saveLocalCart(updated);
     }
   };
@@ -71,9 +71,9 @@ export default function Cart() {
     try {
       await cartApi.remove(id);
       setCartItems(items => items.filter(item => item.id !== id));
-    } catch (err) {
-      // Local fallback
-      const updated = cartItems.filter(item => item.id !== id);
+     } catch {
+       // Local fallback
+       const updated = cartItems.filter(item => item.id !== id);
       saveLocalCart(updated);
     }
   };

@@ -20,12 +20,12 @@ export default function Dashboard() {
     { id: 'VV-98011', date: '2026-05-15', total: '$3,200', status: 'Delivered', item: 'Oud Imperial Extrait' }
   ];
 
-  const handleLogout = async () => {
-    try {
-      await authApi.logout();
-    } catch (err) {
-      console.warn('API logout failed, performing local logout.');
-    }
+   const handleLogout = async () => {
+     try {
+       await authApi.logout();
+     } catch {
+       console.warn('API logout failed, performing local logout.');
+     }
     localStorage.removeItem('auth_token');
     alert('Logged out successfully.');
     navigate('/');
