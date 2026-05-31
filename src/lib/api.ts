@@ -119,3 +119,22 @@ export const cartApi = {
   remove: (cartId: number) => api.delete(`/cart/${cartId}`),
   clear: () => api.delete('/cart'),
 };
+
+// ─── Orders API ─────────────────────────────────────────────
+export const ordersApi = {
+  list: () => api.get('/orders'),
+  create: (data: {
+    shipping_name: string;
+    shipping_email: string;
+    shipping_phone: string;
+    shipping_address: string;
+    shipping_city: string;
+    shipping_postal_code: string;
+    notes?: string;
+  }) => api.post('/orders', data),
+};
+
+// ─── Payment API ────────────────────────────────────────────
+export const paymentApi = {
+  checkout: (orderId: number) => api.post('/payments/checkout', { order_id: orderId }),
+};
